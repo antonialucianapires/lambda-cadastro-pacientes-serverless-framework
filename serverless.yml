@@ -17,3 +17,10 @@ functions:
       - http:
           path: pacientes
           method: get
+  
+  obterPaciente:
+    handler: handler.obterPaciente
+    events:
+      - http:
+          path: pacientes/{pacienteId}
+          method: get
