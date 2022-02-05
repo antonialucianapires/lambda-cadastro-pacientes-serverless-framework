@@ -8,10 +8,17 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-
   stage: dev
   region: us-east-1
-
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+        - dynamodb:GetItem
+      Resource: arn:aws:dynamodb:us-east-1:237387733543:table/PACIENTES
 
 functions:
   listarPacientes:
