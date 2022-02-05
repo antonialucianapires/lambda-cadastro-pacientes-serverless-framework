@@ -21,11 +21,10 @@ module.exports.listarPacientes = async (event) => {
 
 
 module.exports.obterPaciente = async (event) => {
-  console.log( 'event: ' + event)
+  
   const { pacienteId } = event;
 
   const paciente = pacientes.find(p => p.id == pacienteId);
-  console.log('paciente: ' + paciente);
 
   if (!paciente) {
     return {
