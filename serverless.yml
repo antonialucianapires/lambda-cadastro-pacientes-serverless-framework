@@ -18,7 +18,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:DeleteItem
         - dynamodb:GetItem
-      Resource: arn:aws:dynamodb:us-east-1:237387733543:table/PACIENTES
+      Resource: arn:aws:dynamodb:us-east-1:681048862290:table/PACIENTES
 
 functions:
   listarPacientes:
