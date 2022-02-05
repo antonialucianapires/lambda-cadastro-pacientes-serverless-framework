@@ -1,0 +1,23 @@
+{
+  "name": "cadastro-pacientes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonialucianapires/lambda-cadastro-pacientes-serverless-framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antonialucianapires/lambda-cadastro-pacientes-serverless-framework/issues"
+  },
+  "homepage": "https://github.com/antonialucianapires/lambda-cadastro-pacientes-serverless-framework#readme",
+  "devDependencies": {
+    "serverless-offline": "^8.4.0"
+  }
+}
