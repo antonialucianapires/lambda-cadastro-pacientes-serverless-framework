@@ -19,5 +19,8 @@
   "homepage": "https://github.com/antonialucianapires/lambda-cadastro-pacientes-serverless-framework#readme",
   "devDependencies": {
     "serverless-offline": "^8.4.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1069.0"
   }
 }
