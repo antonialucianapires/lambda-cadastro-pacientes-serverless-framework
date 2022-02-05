@@ -17,10 +17,12 @@ functions:
       - http:
           path: pacientes
           method: get
+          cors: true
   
   obterPaciente:
     handler: handler.obterPaciente
     events:
       - http:
-          path: pacientes/{pacienteId}
+          path: /pacientes/{pacienteId}
           method: get
+          cors: true
