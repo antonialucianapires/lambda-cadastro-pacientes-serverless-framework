@@ -1,5 +1,5 @@
 'use strict';
-const {v4 : uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const params = {
@@ -82,7 +82,7 @@ module.exports.cadastrarPaciente = async (event) => {
     const body = JSON.parse(event.body);
     const { nome, email, data_nascimento, telefone } = body;
 
-    const timestamp = new Date().getTime;
+    const timestamp = new Date(new Date().getTime());
 
     const paciente = {
       paciente_id: uuidv4(),
@@ -91,8 +91,8 @@ module.exports.cadastrarPaciente = async (event) => {
       email: email,
       telefone: telefone,
       status: true,
-      criado_em: timestamp,
-      atualizado_em: timestamp
+      criado_em: timestamp.toLocaleDateString() + ' ' + timestamp.toLocaleTimeString(),
+      atualizado_em: timestamp.toLocaleDateString() + ' ' + timestamp.toLocaleTimeString()
     }
 
     await dynamoDB
@@ -117,4 +117,56 @@ module.exports.cadastrarPaciente = async (event) => {
       }),
     };
   }
+}
+
+module.exports.atualizarPaciente = async (event) => {
+  try {
+    const timestamp = new Date(new Date().getTime());
+    const { pacienteId } = event.pathParameters;
+    const body = JSON.parse(event.body);
+    const { nome, email, data_nascimento, telefone } = body;
+
+    await dynamoDB.update({
+      ...params,
+      Key: {
+        paciente_id: pacienteId
+      },
+      UpdateExpression:
+        'SET nome = :nome, data_nascimento = :dt, email = :email, telefone = :telefone, atualizado_em = :atualizado_em',
+      ConditionExpression: 'attribute_exists(paciente_id)',
+      ExpressionAttributeValues: {
+        ':nome': nome,
+        ':dt': data_nascimento,
+        ':email': email,
+        ':telefone': telefone,
+        ':atualizado_em': timestamp.toLocaleDateString() + ' ' + timestamp.toLocaleTimeString()
+      }
+    }).promise();
+
+    return {
+      statusCode: 204,
+    }
+
+  } catch (err) {
+    console.log("Error", err);
+
+    let error = err.name ? err.name : "Exception";
+    let message = err.message ? err.message : "Unknown error";
+    let statusCode = err.statusCode ? err.statusCode : 500;
+
+    if (error === 'ConditionalCheckFailedException') {
+      error = 'Paciente não existe';
+      message = `Recurso solicitado não existe e não pode ser atualizado`;
+      statusCode = 404;
+    }
+
+    return {
+      statusCode,
+      body: JSON.stringify({
+        error,
+        message
+      }),
+    };
+  }
+
 }
