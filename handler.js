@@ -9,7 +9,26 @@ const params = {
 module.exports.listarPacientes = async (event) => {
   try {
 
-    let dados = await dynamoDB.scan(params).promise();
+    const queryString = {
+      limit: 5,
+      ...event.queryStringParameters
+    }
+
+    const { limit, next } = queryString;
+
+    let localParams = {
+      ...params,
+      Limit: limit
+    }
+
+    if (next) {
+      localParams.ExclusiveStartKey = {
+        paciente_id: next
+      }
+    }
+
+
+    let dados = await dynamoDB.scan(localParams).promise();
 
     if (!dados || dados.Items.length === 0) {
       return {
@@ -18,9 +37,18 @@ module.exports.listarPacientes = async (event) => {
       }
     }
 
+    let nextToken = dados.LastEvaluatedKey != undefined
+      ? dados.LastEvaluatedKey.paciente_id 
+      : null;
+
+      const result = {
+        items: dados.Items,
+        next_token: nextToken
+      }
+
     return {
       statusCode: 200,
-      body: JSON.stringify(dados.Items)
+      body: JSON.stringify(result)
     }
 
   } catch (error) {
