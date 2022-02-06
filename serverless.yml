@@ -54,6 +54,14 @@ functions:
           method: put
           cors: true
 
+  deletarPaciente:
+    handler: handler.deletarPaciente
+    events:
+      - http:
+          path: /pacientes/{pacienteId}
+          method: delete
+          cors: true
+
 resources:
   Resources:
     PacientesTable:
